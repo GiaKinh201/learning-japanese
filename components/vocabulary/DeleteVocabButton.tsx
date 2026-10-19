@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Loader2 } from 'lucide-react'
 
 export default function DeleteVocabButton({ vocabId }: { vocabId: string }) {
   const [confirming, setConfirming] = useState(false)
@@ -21,21 +21,27 @@ export default function DeleteVocabButton({ vocabId }: { vocabId: string }) {
 
   if (confirming) {
     return (
-      <div className="flex gap-1 shrink-0">
+      <div className="flex items-center gap-1.5 shrink-0">
         <button
+          type="button"
           onClick={() => setConfirming(false)}
-          className="px-2 py-1 rounded-lg text-xs border"
-          style={{ borderColor: '#E8D5D8', color: '#6B6B7E' }}
+          className="px-2.5 py-1.5 rounded-lg text-xs font-medium border border-[#E8D5D8] text-[#6B6B7E] hover:bg-gray-50 transition-colors cursor-pointer"
         >
           Huỷ
         </button>
         <button
+          type="button"
           onClick={handleDelete}
           disabled={isPending}
-          className="px-2 py-1 rounded-lg text-xs text-white"
-          style={{ background: '#C8102E' }}
+          className="px-2.5 py-1.5 rounded-lg text-xs font-semibold text-white bg-[#C8102E] hover:opacity-90 transition-all cursor-pointer disabled:opacity-50 flex items-center gap-1"
         >
-          {isPending ? '...' : 'Xoá'}
+          {isPending ? (
+            <>
+              <Loader2 size={12} className="animate-spin" /> Đang xóa
+            </>
+          ) : (
+            'Xóa'
+          )}
         </button>
       </div>
     )
@@ -43,10 +49,11 @@ export default function DeleteVocabButton({ vocabId }: { vocabId: string }) {
 
   return (
     <button
+      type="button"
       onClick={() => setConfirming(true)}
-      className="p-1.5 rounded-lg transition-colors hover:bg-red-50 shrink-0"
+      className="min-w-[36px] min-h-[36px] p-2 rounded-xl text-[#6B6B7E] hover:text-[#C8102E] hover:bg-red-50 transition-colors flex items-center justify-center cursor-pointer shrink-0"
       title="Xoá từ này"
-      style={{ color: '#6B6B7E' }}
+      aria-label="Xoá từ này"
     >
       <Trash2 size={15} />
     </button>

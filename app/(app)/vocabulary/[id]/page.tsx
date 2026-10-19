@@ -3,6 +3,8 @@ import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Plus, BookOpen } from 'lucide-react'
 import DeleteVocabButton from '@/components/vocabulary/DeleteVocabButton'
+import EditVocabButton from '@/components/vocabulary/EditVocabButton'
+import AudioButton from '@/components/common/AudioButton'
 
 export default async function CollectionDetailPage({ params }: PageProps<'/vocabulary/[id]'>) {
   const { id } = await params
@@ -37,7 +39,7 @@ export default async function CollectionDetailPage({ params }: PageProps<'/vocab
           {vocabulary.length > 0 && (
             <Link
               href={`/study/${id}`}
-              className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:opacity-90"
+              className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:opacity-90 shadow-sm"
               style={{ background: '#C8102E' }}
             >
               Học ngay ▶
@@ -72,10 +74,10 @@ export default async function CollectionDetailPage({ params }: PageProps<'/vocab
         >
           <div className="text-4xl mb-3">✨</div>
           <p className="font-medium mb-1" style={{ color: '#1A1A2E' }}>Bộ này chưa có từ nào</p>
-          <p className="text-sm mb-4" style={{ color: '#6B6B7E' }}>Thêm từ đầu tiên qua tìm kiếm Jisho</p>
+          <p className="text-sm mb-4" style={{ color: '#6B6B7E' }}>Thêm từ đầu tiên qua tìm kiếm Jisho & AI</p>
           <Link
             href={`/vocabulary/${id}/add`}
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-white text-sm font-medium"
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-xl text-white text-sm font-medium shadow-sm"
             style={{ background: '#C8102E' }}
           >
             <Plus size={15} /> Thêm từ vựng
@@ -86,20 +88,23 @@ export default async function CollectionDetailPage({ params }: PageProps<'/vocab
           {vocabulary.map((vocab) => (
             <div
               key={vocab.id}
-              className="rounded-2xl p-5 border"
+              className="rounded-2xl p-5 border transition-all hover:shadow-xs"
               style={{ background: '#FFFFFF', borderColor: '#E8D5D8' }}
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline gap-3 flex-wrap">
+                  <div className="flex items-center gap-3 flex-wrap">
                     <span className="text-2xl font-bold" style={{ color: '#1A1A2E' }}>
                       {vocab.word}
                     </span>
-                    <span className="text-sm" style={{ color: '#6B6B7E' }}>
-                      {vocab.reading}
-                    </span>
+                    {vocab.reading && (
+                      <span className="text-sm font-medium px-2 py-0.5 rounded-full" style={{ background: '#FFE4E8', color: '#C8102E' }}>
+                        {vocab.reading}
+                      </span>
+                    )}
+                    <AudioButton text={vocab.word} size={15} />
                   </div>
-                  <p className="text-sm font-medium mt-1" style={{ color: '#C8102E' }}>
+                  <p className="text-base font-semibold mt-1.5" style={{ color: '#C8102E' }}>
                     {vocab.meaning_vi}
                   </p>
                   {vocab.meaning_en && (
@@ -107,17 +112,26 @@ export default async function CollectionDetailPage({ params }: PageProps<'/vocab
                   )}
                   {vocab.example_jp && (
                     <div
-                      className="mt-3 p-3 rounded-xl"
-                      style={{ background: '#FFF5F6', borderLeft: '3px solid #FFB7C5' }}
+                      className="mt-3 p-3.5 rounded-xl border border-[#F5D0D5] bg-[#FFF5F6]"
                     >
-                      <p className="text-sm" style={{ color: '#1A1A2E' }}>{vocab.example_jp}</p>
+                      <div className="flex items-start justify-between gap-2">
+                        <p className="text-sm font-bold leading-relaxed" style={{ color: '#1A1A2E' }}>
+                          {vocab.example_jp}
+                        </p>
+                        <AudioButton text={vocab.example_jp} size={14} />
+                      </div>
                       {vocab.example_vi && (
-                        <p className="text-xs mt-1" style={{ color: '#6B6B7E' }}>{vocab.example_vi}</p>
+                        <p className="text-xs mt-1.5 font-medium" style={{ color: '#6B6B7E' }}>
+                          {vocab.example_vi}
+                        </p>
                       )}
                     </div>
                   )}
                 </div>
-                <DeleteVocabButton vocabId={vocab.id} />
+                <div className="flex items-center gap-1 shrink-0">
+                  <EditVocabButton vocab={vocab} />
+                  <DeleteVocabButton vocabId={vocab.id} />
+                </div>
               </div>
             </div>
           ))}

@@ -91,9 +91,11 @@ export default function Navbar({ profile }: NavbarProps) {
           </Link>
 
           <button
+            type="button"
             onClick={handleSignOut}
-            className="p-1.5 rounded-lg transition-colors hover:bg-[#FFF5F6]"
+            className="min-w-[36px] min-h-[36px] p-2 rounded-xl transition-colors hover:bg-[#FFF5F6] flex items-center justify-center cursor-pointer"
             title="Đăng xuất"
+            aria-label="Đăng xuất khỏi tài khoản"
             style={{ color: '#6B6B7E' }}
           >
             <LogOut size={16} />
