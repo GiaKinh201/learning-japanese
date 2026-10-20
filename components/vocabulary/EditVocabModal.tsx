@@ -27,7 +27,6 @@ export default function EditVocabModal({
   onSuccess,
 }: EditVocabModalProps) {
   const supabase = createClient()
-  const [mounted, setMounted] = useState(false)
 
   const [meaningVi, setMeaningVi] = useState(vocab.meaning_vi || '')
   const [reading, setReading] = useState(vocab.reading || '')
@@ -42,38 +41,21 @@ export default function EditVocabModal({
   const [aiExamples, setAiExamples] = useState<ExampleSuggestion[]>([])
   const [aiError, setAiError] = useState<string | null>(null)
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   // Lock body scroll when modal is open
   useEffect(() => {
-    if (isOpen) {
-      const originalOverflow = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-      return () => {
-        document.body.style.overflow = originalOverflow
-      }
+    if (!isOpen) return
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = originalOverflow
     }
   }, [isOpen])
 
-  // Sync state whenever modal opens or vocab prop changes
-  useEffect(() => {
-    if (isOpen) {
-      setMeaningVi(vocab.meaning_vi || '')
-      setReading(vocab.reading || '')
-      setExampleJp(vocab.example_jp || '')
-      setExampleVi(vocab.example_vi || '')
-      setError(null)
-      setAiExamples([])
-      setAiError(null)
-    }
-  }, [isOpen, vocab])
-
   // Handle ESC key to close modal
   useEffect(() => {
+    if (!isOpen) return
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape' && isOpen && !isSaving) {
+      if (e.key === 'Escape' && !isSaving) {
         onClose()
       }
     }
@@ -157,7 +139,7 @@ export default function EditVocabModal({
     }
   }
 
-  if (!isOpen || !mounted) return null
+  if (!isOpen || typeof document === 'undefined') return null
 
   return createPortal(
     <div

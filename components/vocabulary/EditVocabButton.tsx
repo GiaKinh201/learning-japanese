@@ -22,14 +22,17 @@ export default function EditVocabButton({ vocab }: { vocab: Vocabulary }) {
         <Pencil size={15} />
       </button>
 
-      <EditVocabModal
-        vocab={vocab}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        onSuccess={() => {
-          router.refresh()
-        }}
-      />
+      {isOpen && (
+        <EditVocabModal
+          key={vocab.id}
+          vocab={vocab}
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          onSuccess={() => {
+            router.refresh()
+          }}
+        />
+      )}
     </>
   )
 }

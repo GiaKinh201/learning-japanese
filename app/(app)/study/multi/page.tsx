@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import StudySession from '@/components/flashcard/StudySession'
+import { shuffleArray } from '@/lib/shuffle'
 
 interface Props {
   searchParams: Promise<{ ids?: string }>
@@ -55,7 +56,7 @@ export default async function MultiStudyPage({ searchParams }: Props) {
 
   return (
     <StudySession
-      initialCards={cards}
+      initialCards={shuffleArray(cards)}
       collectionId="multi"
       collectionName={collectionName}
     />

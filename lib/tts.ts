@@ -62,7 +62,11 @@ export function playJapaneseAudio(
 
 export function stopJapaneseAudio() {
   if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    if (currentUtterance) {
+      currentUtterance.onend = null
+      currentUtterance.onerror = null
+      currentUtterance = null
+    }
     window.speechSynthesis.cancel()
-    currentUtterance = null
   }
 }

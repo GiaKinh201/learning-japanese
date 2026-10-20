@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
@@ -62,13 +63,13 @@ export default function LoginPage() {
       </div>
 
       {/* Back link */}
-      <a
+      <Link
         href="/"
         className="mt-6 text-sm hover:underline"
         style={{ color: '#6B6B7E' }}
       >
         ← Về trang chủ
-      </a>
+      </Link>
     </main>
   )
 }

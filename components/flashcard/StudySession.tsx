@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { Vocabulary } from '@/types/database'
 import AudioButton from '@/components/common/AudioButton'
 import { playJapaneseAudio } from '@/lib/tts'
+import { shuffleArray } from '@/lib/shuffle'
 import { Pencil, Shuffle, RotateCcw } from 'lucide-react'
 import EditVocabModal from '@/components/vocabulary/EditVocabModal'
 
@@ -18,21 +19,11 @@ interface Props {
 type CardState = 'question' | 'answer'
 type SessionResult = { id: string; correct: boolean }
 
-// Thuật toán xáo trộn Fisher-Yates (Knuth) chuẩn quốc tế
-function shuffleArray<T>(array: T[]): T[] {
-  const arr = [...array]
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]]
-  }
-  return arr
-}
-
 export default function StudySession({ initialCards, collectionId, collectionName }: Props) {
   const router = useRouter()
   const supabase = createClient()
 
-  // Khởi tạo với initialCards để SSR và Client khớp nhau 100%, sau đó xáo trộn trên client
+  // initialCards đã được xáo trộn sẵn từ Server Component
   const [cards, setCards] = useState(initialCards)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [cardState, setCardState] = useState<CardState>('question')
@@ -40,11 +31,6 @@ export default function StudySession({ initialCards, collectionId, collectionNam
   const [done, setDone] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [isReviewingMissed, setIsReviewingMissed] = useState(false)
-
-  // Xáo trộn ngẫu nhiên ngay khi client mount
-  useEffect(() => {
-    setCards(shuffleArray(initialCards))
-  }, [initialCards])
 
   const current = cards[currentIndex]
   const progress = cards.length > 0 ? (currentIndex / cards.length) * 100 : 0
@@ -409,8 +395,9 @@ export default function StudySession({ initialCards, collectionId, collectionNam
       </div>
 
       {/* Edit Modal */}
-      {current && (
+      {current && isEditing && (
         <EditVocabModal
+          key={current.id}
           vocab={current}
           isOpen={isEditing}
           onClose={() => setIsEditing(false)}

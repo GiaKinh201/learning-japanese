@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Volume2, VolumeX } from 'lucide-react'
+import { Volume2 } from 'lucide-react'
 import { playJapaneseAudio, stopJapaneseAudio } from '@/lib/tts'
 
 interface AudioButtonProps {

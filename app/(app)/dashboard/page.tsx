@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { BookOpen, Flame, GraduationCap, Plus } from 'lucide-react'
+import StatCard from '@/components/common/StatCard'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -170,30 +171,6 @@ export default async function DashboardPage() {
             </Link>
           </div>
         )}
-      </div>
-    </div>
-  )
-}
-
-function StatCard({
-  icon, label, value, bg
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-  bg: string
-}) {
-  return (
-    <div
-      className="rounded-2xl p-4 flex flex-col gap-2"
-      style={{ background: bg, border: '1px solid #E8D5D8' }}
-    >
-      <div className="p-2 rounded-xl w-fit" style={{ background: '#FFE4E8' }}>
-        {icon}
-      </div>
-      <div>
-        <p className="text-xs font-medium" style={{ color: '#6B6B7E' }}>{label}</p>
-        <p className="text-xl font-bold" style={{ color: '#1A1A2E' }}>{value}</p>
       </div>
     </div>
   )

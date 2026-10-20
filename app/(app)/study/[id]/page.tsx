@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import StudySession from '@/components/flashcard/StudySession'
+import { shuffleArray } from '@/lib/shuffle'
 
 export default async function StudyPage({ params }: PageProps<'/study/[id]'>) {
   const { id } = await params
@@ -18,7 +19,7 @@ export default async function StudyPage({ params }: PageProps<'/study/[id]'>) {
 
   return (
     <StudySession
-      initialCards={vocabRes.data}
+      initialCards={shuffleArray(vocabRes.data)}
       collectionId={id}
       collectionName={collectionRes.data.name}
     />

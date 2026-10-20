@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { Flame, BookOpen, GraduationCap, Calendar } from 'lucide-react'
+import StatCard from '@/components/common/StatCard'
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -52,10 +53,10 @@ export default async function ProfilePage() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4">
-        <StatCard icon={<Flame size={20} style={{ color: '#C8102E' }} />} label="Streak hiện tại" value={`${profile?.streak ?? 0} ngày`} />
-        <StatCard icon={<BookOpen size={20} style={{ color: '#C8102E' }} />} label="Tổng từ vựng" value={`${totalVocab} từ`} />
-        <StatCard icon={<GraduationCap size={20} style={{ color: '#C8102E' }} />} label="Lượt đã học" value={`${totalStudied} lần`} />
-        <StatCard icon={<Calendar size={20} style={{ color: '#C8102E' }} />} label="Bộ sưu tập" value={`${totalCollections} bộ`} />
+        <StatCard layout="inline" icon={<Flame size={20} style={{ color: '#C8102E' }} />} label="Streak hiện tại" value={`${profile?.streak ?? 0} ngày`} />
+        <StatCard layout="inline" icon={<BookOpen size={20} style={{ color: '#C8102E' }} />} label="Tổng từ vựng" value={`${totalVocab} từ`} />
+        <StatCard layout="inline" icon={<GraduationCap size={20} style={{ color: '#C8102E' }} />} label="Lượt đã học" value={`${totalStudied} lần`} />
+        <StatCard layout="inline" icon={<Calendar size={20} style={{ color: '#C8102E' }} />} label="Bộ sưu tập" value={`${totalCollections} bộ`} />
       </div>
 
       {/* Encouragement */}
@@ -71,21 +72,6 @@ export default async function ProfilePage() {
             : `🔥 Tuyệt vời! Bạn đã học ${totalStudied} lần. Tiếp tục nhé!`}
         </p>
       </div>
-    </div>
-  )
-}
-
-function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div
-      className="rounded-2xl p-4 border"
-      style={{ background: '#FFFFFF', borderColor: '#E8D5D8' }}
-    >
-      <div className="flex items-center gap-2 mb-1">
-        {icon}
-        <span className="text-xs" style={{ color: '#6B6B7E' }}>{label}</span>
-      </div>
-      <div className="text-2xl font-bold" style={{ color: '#1A1A2E' }}>{value}</div>
     </div>
   )
 }
