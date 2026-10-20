@@ -41,6 +41,13 @@ export const metadata: Metadata = {
       'Học từ vựng tiếng Nhật mỗi ngày với từ điển Jisho thông minh, trợ lý Gemini AI và thẻ học 3D Active Recall.',
   },
   applicationName: 'Học tiếng Nhật cùng nhau',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/apple-icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',

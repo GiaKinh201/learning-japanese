@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E11D48" />
+      <stop offset="100%" stop-color="#C8102E" />
+    </linearGradient>
+    <linearGradient id="petalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFF0F3" />
+    </linearGradient>
+  </defs>
+
+  <!-- Crimson Badge -->
+  <rect width="64" height="64" rx="16" fill="url(#bg)" />
+
+  <!-- Inner Sakura Motif -->
+  <g transform="translate(32, 32)">
+    <!-- 5 Sakura Petals with classic notch -->
+    <!-- Petal 0 (Top) -->
+    <path d="M 0,-4 C -6,-12 -12,-18 -4,-23 C -1,-20 1,-20 4,-23 C 12,-18 6,-12 0,-4 Z" fill="url(#petalGrad)" />
+    <!-- Petal 72 deg -->
+    <path d="M 0,-4 C -6,-12 -12,-18 -4,-23 C -1,-20 1,-20 4,-23 C 12,-18 6,-12 0,-4 Z" fill="url(#petalGrad)" transform="rotate(72)" />
+    <!-- Petal 144 deg -->
+    <path d="M 0,-4 C -6,-12 -12,-18 -4,-23 C -1,-20 1,-20 4,-23 C 12,-18 6,-12 0,-4 Z" fill="url(#petalGrad)" transform="rotate(144)" />
+    <!-- Petal 216 deg -->
+    <path d="M 0,-4 C -6,-12 -12,-18 -4,-23 C -1,-20 1,-20 4,-23 C 12,-18 6,-12 0,-4 Z" fill="url(#petalGrad)" transform="rotate(216)" />
+    <!-- Petal 288 deg -->
+    <path d="M 0,-4 C -6,-12 -12,-18 -4,-23 C -1,-20 1,-20 4,-23 C 12,-18 6,-12 0,-4 Z" fill="url(#petalGrad)" transform="rotate(288)" />
+
+    <!-- Center Pistil Ring -->
+    <circle cx="0" cy="0" r="5" fill="#FFE4E8" />
+    <circle cx="0" cy="0" r="2.5" fill="#C8102E" />
+  </g>
+</svg>
