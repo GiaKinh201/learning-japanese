@@ -36,7 +36,7 @@ export default async function LandingPage({ searchParams }: Props) {
         <div className="absolute bottom-16 left-16 w-48 h-48 rounded-full opacity-15" style={{ background: 'radial-gradient(circle, #C8102E, transparent)' }} />
 
         {/* Japanese character decoration */}
-        <div className="mb-6 text-7xl font-bold opacity-10 select-none" style={{ color: '#C8102E' }}>
+        <div className="mb-6 text-7xl font-bold opacity-10 select-none" aria-hidden="true" style={{ color: '#C8102E' }}>
           日本語
         </div>
 
@@ -50,7 +50,7 @@ export default async function LandingPage({ searchParams }: Props) {
         <p className="text-xl font-medium mb-2" style={{ color: '#C8102E' }}>
           cùng nhau
         </p>
-        <p className="text-base max-w-md mb-10" style={{ color: '#6B6B7E' }}>
+        <p className="text-base max-w-md mb-10 font-medium" style={{ color: '#4A4A5A' }}>
           Xây dựng bộ từ vựng cá nhân, học flashcard mỗi ngày và theo dõi tiến độ của bạn. みんなで日本語を勉強しましょう！
         </p>
 
