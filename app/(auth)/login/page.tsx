@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import SakuraIcon from '@/components/common/SakuraIcon'
 
 export default function LoginPage() {
   const supabase = createClient()
@@ -26,7 +27,9 @@ export default function LoginPage() {
         style={{ background: '#FFFFFF', border: '1px solid #E8D5D8' }}
       >
         {/* Logo / Icon */}
-        <div className="mb-2 text-6xl">🌸</div>
+        <div className="mb-3 flex justify-center">
+          <SakuraIcon size={56} />
+        </div>
         <div className="text-3xl font-bold mb-1" style={{ color: '#C8102E' }}>
           日本語
         </div>
@@ -58,7 +61,7 @@ export default function LoginPage() {
         </button>
 
         <p className="text-xs mt-6" style={{ color: '#6B6B7E' }}>
-          Bất kỳ ai cũng có thể đăng ký và học cùng nhóm 🎌
+          Bất kỳ ai cũng có thể đăng ký và tham gia học tập miễn phí
         </p>
       </div>
 

@@ -7,7 +7,7 @@ import type { Vocabulary } from '@/types/database'
 import AudioButton from '@/components/common/AudioButton'
 import { playJapaneseAudio } from '@/lib/tts'
 import { shuffleArray } from '@/lib/shuffle'
-import { Pencil, Shuffle, RotateCcw } from 'lucide-react'
+import { Pencil, Shuffle, RotateCcw, Trophy, Sparkles, BookOpen, Check, X } from 'lucide-react'
 import EditVocabModal from '@/components/vocabulary/EditVocabModal'
 
 interface Props {
@@ -148,7 +148,15 @@ export default function StudySession({ initialCards, collectionId, collectionNam
 
     return (
       <div className="max-w-lg mx-auto text-center space-y-6 fade-in">
-        <div className="text-6xl">{pct === 100 ? '🎉' : pct >= 50 ? '💪' : '📖'}</div>
+        <div className="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center bg-[#FFF0F3] text-[#C8102E] shadow-xs border border-[#F5D0D5]">
+          {pct === 100 ? (
+            <Trophy size={36} />
+          ) : pct >= 50 ? (
+            <Sparkles size={36} />
+          ) : (
+            <BookOpen size={36} />
+          )}
+        </div>
         <h2 className="text-2xl font-bold text-[#1A1A2E]">
           {pct === 100 ? 'Xuất sắc! Đã thuộc 100%!' : 'Phiên học hoàn thành!'}
         </h2>
@@ -159,13 +167,19 @@ export default function StudySession({ initialCards, collectionId, collectionNam
           </p>
           <div className="flex gap-4 mt-4 justify-center">
             <div className="text-center">
-              <div className="text-2xl font-bold text-[#059669]">{correctCount}</div>
-              <div className="text-xs text-[#6B6B7E]">Đã thuộc ✓</div>
+              <div className="text-2xl font-bold text-[#059669] flex items-center justify-center gap-1">
+                <span>{correctCount}</span>
+                <Check size={18} />
+              </div>
+              <div className="text-xs text-[#6B6B7E]">Đã thuộc</div>
             </div>
             <div className="w-px bg-[#E8D5D8]" />
             <div className="text-center">
-              <div className="text-2xl font-bold text-[#C8102E]">{incorrectCards.length}</div>
-              <div className="text-xs text-[#6B6B7E]">Chưa thuộc ✗</div>
+              <div className="text-2xl font-bold text-[#C8102E] flex items-center justify-center gap-1">
+                <span>{incorrectCards.length}</span>
+                <X size={18} />
+              </div>
+              <div className="text-xs text-[#6B6B7E]">Chưa nhớ</div>
             </div>
           </div>
         </div>
@@ -284,14 +298,17 @@ export default function StudySession({ initialCards, collectionId, collectionNam
             <p className="text-xs mb-3 font-medium text-[#6B6B7E]">
               Từ tiếng Nhật — bấm để lật
             </p>
-            <div className="text-5xl font-bold mb-3 tracking-wide text-[#1A1A2E]">
+            {/* Kanji / Main word */}
+            <div className="text-5xl font-bold mb-4 tracking-wide text-[#1A1A2E]">
               {current.word}
             </div>
+
             {current.reading && (
               <div className="text-lg font-semibold px-3.5 py-1 rounded-full mb-4 tracking-wider bg-[#FFE4E8] text-[#C8102E]">
                 {current.reading}
               </div>
             )}
+
             <AudioButton text={current.word} label="Nghe phát âm" size={16} />
           </div>
 
@@ -354,15 +371,17 @@ export default function StudySession({ initialCards, collectionId, collectionNam
         <div className="flex gap-3">
           <button
             onClick={() => handleResult(false)}
-            className="flex-1 py-3 rounded-2xl font-bold text-lg border-2 border-[#FECDD3] text-[#C8102E] bg-[#FFF5F6] transition-all hover:scale-105 cursor-pointer"
+            className="flex-1 py-3 rounded-2xl font-bold text-lg border-2 border-[#FECDD3] text-[#C8102E] bg-[#FFF5F6] transition-all hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
           >
-            ✗ Chưa nhớ
+            <X size={20} />
+            <span>Chưa nhớ</span>
           </button>
           <button
             onClick={() => handleResult(true)}
-            className="flex-1 py-3 rounded-2xl font-bold text-lg border-2 border-[#A7F3D0] text-[#059669] bg-[#F0FDF4] transition-all hover:scale-105 cursor-pointer"
+            className="flex-1 py-3 rounded-2xl font-bold text-lg border-2 border-[#A7F3D0] text-[#059669] bg-[#F0FDF4] transition-all hover:scale-105 cursor-pointer flex items-center justify-center gap-2"
           >
-            ✓ Đã thuộc
+            <Check size={20} />
+            <span>Đã thuộc</span>
           </button>
         </div>
       ) : (

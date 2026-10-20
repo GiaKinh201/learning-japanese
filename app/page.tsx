@@ -1,6 +1,16 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import {
+  BookOpen,
+  Sparkles,
+  Volume2,
+  Layers,
+  Shuffle,
+  Flame,
+  ArrowRight,
+} from 'lucide-react'
+import SakuraIcon from '@/components/common/SakuraIcon'
 
 interface Props {
   searchParams: Promise<{ code?: string }>
@@ -41,11 +51,11 @@ export default async function LandingPage({ searchParams }: Props) {
         </div>
 
         <div className="-mt-8 mb-4 flex items-center gap-3">
-          <span className="text-4xl">🌸</span>
+          <SakuraIcon size={36} />
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: '#1A1A2E' }}>
             Học tiếng Nhật
           </h1>
-          <span className="text-4xl">🌸</span>
+          <SakuraIcon size={36} />
         </div>
         <p className="text-xl font-medium mb-2" style={{ color: '#C8102E' }}>
           cùng nhau
@@ -60,7 +70,7 @@ export default async function LandingPage({ searchParams }: Props) {
           style={{ background: '#C8102E' }}
         >
           <span>Bắt đầu học ngay</span>
-          <span>→</span>
+          <ArrowRight size={18} />
         </Link>
       </section>
 
@@ -70,23 +80,29 @@ export default async function LandingPage({ searchParams }: Props) {
           Tính năng nổi bật
         </h2>
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((f) => (
-            <div
-              key={f.title}
-              className="rounded-2xl p-6 border transition-all hover:shadow-sm"
-              style={{ borderColor: '#E8D5D8', background: '#FFFAF9' }}
-            >
-              <div className="text-3xl mb-3">{f.icon}</div>
-              <h3 className="font-bold text-lg mb-2" style={{ color: '#1A1A2E' }}>{f.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: '#6B6B7E' }}>{f.desc}</p>
-            </div>
-          ))}
+          {features.map((f) => {
+            const Icon = f.icon
+            return (
+              <div
+                key={f.title}
+                className="rounded-2xl p-6 border transition-all hover:shadow-sm"
+                style={{ borderColor: '#E8D5D8', background: '#FFFAF9' }}
+              >
+                <div className="w-12 h-12 rounded-xl bg-[#FFE4E8] text-[#C8102E] flex items-center justify-center mb-4">
+                  <Icon size={24} />
+                </div>
+                <h3 className="font-bold text-lg mb-2" style={{ color: '#1A1A2E' }}>{f.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: '#6B6B7E' }}>{f.desc}</p>
+              </div>
+            )
+          })}
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-6 text-center text-sm" style={{ color: '#6B6B7E', borderTop: '1px solid #E8D5D8' }}>
-        🌸 Học tiếng Nhật cùng nhau — みんなで日本語を学ぼう
+      <footer className="py-6 text-center text-sm flex items-center justify-center gap-2" style={{ color: '#6B6B7E', borderTop: '1px solid #E8D5D8' }}>
+        <SakuraIcon size={18} />
+        <span>Học tiếng Nhật cùng nhau — みんなで日本語を学ぼう</span>
       </footer>
     </main>
   )
@@ -94,32 +110,32 @@ export default async function LandingPage({ searchParams }: Props) {
 
 const features = [
   {
-    icon: '📚',
+    icon: BookOpen,
     title: 'Từ điển Jisho thông minh',
     desc: 'Tìm từ vựng linh hoạt bằng tiếng Việt, tiếng Anh hoặc Kanji với gợi ý cấp độ JLPT chuẩn xác.',
   },
   {
-    icon: '✨',
+    icon: Sparkles,
     title: 'Trợ lý Gemini AI',
     desc: 'Tự động dịch nghĩa tiếng Việt tự nhiên và đặt 2 câu ví dụ thực tế kèm cách đọc Furigana.',
   },
   {
-    icon: '🔊',
+    icon: Volume2,
     title: 'Phát âm chuẩn bản xứ',
     desc: 'Nghe phát âm chuẩn giọng Nhật (ja-JP) cho cả từ vựng và toàn bộ câu ví dụ chỉ bằng một chạm.',
   },
   {
-    icon: '🃏',
+    icon: Layers,
     title: 'Thẻ học 3D Active Recall',
     desc: 'Phương pháp lật thẻ thông minh với phím tắt nhanh, tính điểm và vòng ôn tập các từ chưa nhớ.',
   },
   {
-    icon: '🔀',
+    icon: Shuffle,
     title: 'Học gộp nhiều bộ từ',
     desc: 'Tự do chọn gộp nhiều bộ từ vựng khác nhau với thuật toán xáo trộn ngẫu nhiên toàn diện.',
   },
   {
-    icon: '🔥',
+    icon: Flame,
     title: 'Theo dõi Streak & Tiến độ',
     desc: 'Duy trì thói quen học tập hàng ngày với chuỗi ngày liên tiếp và biểu đồ tổng hợp từ vựng.',
   },

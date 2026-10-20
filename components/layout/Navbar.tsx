@@ -31,7 +31,7 @@ export default function Navbar({ profile }: NavbarProps) {
       className="sticky top-0 z-50 border-b"
       style={{ background: '#FFFFFF', borderColor: '#E8D5D8' }}
     >
-      <div className="max-w-5xl mx-auto px-4 h-14 flex items-center gap-6">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 h-14 flex items-center justify-between sm:justify-start gap-2 sm:gap-6">
         {/* Logo */}
         <Link
           href="/dashboard"
@@ -43,14 +43,14 @@ export default function Navbar({ profile }: NavbarProps) {
         </Link>
 
         {/* Nav links */}
-        <div className="flex items-center gap-1 flex-1">
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
           {navLinks.map(({ href, label, icon: Icon }) => {
             const active = pathname.startsWith(href)
             return (
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap shrink-0"
                 style={{
                   background: active ? '#FFE4E8' : 'transparent',
                   color: active ? '#C8102E' : '#6B6B7E',
@@ -64,7 +64,7 @@ export default function Navbar({ profile }: NavbarProps) {
         </div>
 
         {/* User + logout */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           <Link
             href="/profile"
             className="flex items-center gap-2 px-2 py-1 rounded-lg text-sm transition-colors hover:bg-[#FFF5F6]"

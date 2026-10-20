@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     'gemini ai tiếng nhật',
   ],
   openGraph: {
-    title: 'Học tiếng Nhật cùng nhau 🌸 Nihongo Flashcards & AI',
+    title: 'Học tiếng Nhật cùng nhau · Nihongo Flashcards & AI',
     description:
       'Học từ vựng tiếng Nhật mỗi ngày với từ điển Jisho thông minh, trợ lý Gemini AI tạo câu ví dụ và thẻ học 3D Active Recall.',
     url: 'https://learning-japanese-one.vercel.app',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Học tiếng Nhật cùng nhau 🌸 Nihongo Flashcards & AI',
+    title: 'Học tiếng Nhật cùng nhau · Nihongo Flashcards & AI',
     description:
       'Học từ vựng tiếng Nhật mỗi ngày với từ điển Jisho thông minh, trợ lý Gemini AI và thẻ học 3D Active Recall.',
   },

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Plus, CheckSquare, Check, X, BookOpen, Sparkles } from 'lucide-react'
+import { Plus, CheckSquare, Check, X, BookOpen, Sparkles, Play } from 'lucide-react'
 import DeleteCollectionButton from './DeleteCollectionButton'
 
 export interface CollectionItem {
@@ -117,7 +117,7 @@ export default function VocabularyListClient({ collections }: Props) {
       {/* Empty State */}
       {collections.length === 0 ? (
         <div className="rounded-2xl p-16 text-center border-2 border-dashed border-[#E8D5D8] bg-[#FFFBFB]">
-          <div className="text-5xl mb-3">📚</div>
+          <BookOpen size={48} className="mx-auto mb-3 text-[#C8102E]/60" />
           <p className="font-medium mb-1 text-[#1A1A2E]">Chưa có bộ từ vựng nào</p>
           <p className="text-sm mb-5 text-[#6B6B7E]">
             Tạo bộ đầu tiên (ví dụ: N5, Du lịch, Công việc...)
@@ -221,10 +221,11 @@ export default function VocabularyListClient({ collections }: Props) {
                     {count > 0 && (
                       <Link
                         href={`/study/${col.id}`}
-                        className="flex-1 text-center py-2 rounded-xl text-xs font-medium text-white hover:opacity-90 transition-opacity"
+                        className="flex-1 text-center py-2 rounded-xl text-xs font-medium text-white hover:opacity-90 transition-opacity flex items-center justify-center gap-1"
                         style={{ background: '#C8102E', minWidth: '60px' }}
                       >
-                        Học ▶
+                        <span>Học</span>
+                        <Play size={11} className="fill-current" />
                       </Link>
                     )}
                     <DeleteCollectionButton collectionId={col.id} />
@@ -235,8 +236,15 @@ export default function VocabularyListClient({ collections }: Props) {
                     {count === 0 ? (
                       <span className="text-gray-400 italic">Bộ này chưa có từ vựng</span>
                     ) : (
-                      <span className={`font-medium ${isSelected ? 'text-[#C8102E]' : 'text-[#6B6B7E]'}`}>
-                        {isSelected ? '✓ Đã chọn để học' : 'Bấm để chọn bộ này'}
+                      <span className={`font-medium inline-flex items-center gap-1 ${isSelected ? 'text-[#C8102E]' : 'text-[#6B6B7E]'}`}>
+                        {isSelected ? (
+                          <>
+                            <Check size={13} />
+                            <span>Đã chọn để học</span>
+                          </>
+                        ) : (
+                          'Bấm để chọn bộ này'
+                        )}
                       </span>
                     )}
                   </div>
@@ -293,7 +301,8 @@ export default function VocabularyListClient({ collections }: Props) {
               className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-[#C8102E] hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm transition-all cursor-pointer"
             >
               <Sparkles size={15} />
-              Bắt đầu học ngay ▶
+              <span>Bắt đầu học ngay</span>
+              <Play size={12} className="fill-current" />
             </button>
 
             <button

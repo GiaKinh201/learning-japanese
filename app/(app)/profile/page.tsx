@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { Flame, BookOpen, GraduationCap, Calendar } from 'lucide-react'
+import { Flame, BookOpen, GraduationCap, Calendar, Sparkles } from 'lucide-react'
 import StatCard from '@/components/common/StatCard'
+import SakuraIcon from '@/components/common/SakuraIcon'
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -36,10 +37,10 @@ export default async function ProfilePage() {
           />
         ) : (
           <div
-            className="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center text-2xl"
+            className="w-20 h-20 rounded-full mx-auto mb-3 flex items-center justify-center"
             style={{ background: '#FFE4E8' }}
           >
-            🌸
+            <SakuraIcon size={36} />
           </div>
         )}
         <h1 className="text-xl font-bold" style={{ color: '#1A1A2E' }}>
@@ -61,15 +62,22 @@ export default async function ProfilePage() {
 
       {/* Encouragement */}
       <div
-        className="rounded-2xl p-4 text-center"
+        className="rounded-2xl p-4 text-center flex items-center justify-center gap-2"
         style={{ background: 'linear-gradient(135deg, #FFE4E8, #FFF0F3)' }}
       >
+        {totalVocab === 0 ? (
+          <Sparkles size={16} className="text-[#C8102E] shrink-0" />
+        ) : totalStudied === 0 ? (
+          <BookOpen size={16} className="text-[#C8102E] shrink-0" />
+        ) : (
+          <Flame size={16} className="text-[#C8102E] shrink-0" />
+        )}
         <p className="text-sm font-medium" style={{ color: '#C8102E' }}>
           {totalVocab === 0
-            ? '🌱 Hãy thêm từ vựng đầu tiên để bắt đầu!'
+            ? 'Hãy thêm từ vựng đầu tiên để bắt đầu!'
             : totalStudied === 0
-            ? '📖 Bạn có từ rồi, hãy bắt đầu học ngay!'
-            : `🔥 Tuyệt vời! Bạn đã học ${totalStudied} lần. Tiếp tục nhé!`}
+            ? 'Bạn có từ rồi, hãy bắt đầu học ngay!'
+            : `Tuyệt vời! Bạn đã học ${totalStudied} lần. Tiếp tục nhé!`}
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Plus, BookOpen } from 'lucide-react'
+import { ArrowLeft, Plus, BookOpen, Play, Sparkles } from 'lucide-react'
 import DeleteVocabButton from '@/components/vocabulary/DeleteVocabButton'
 import EditVocabButton from '@/components/vocabulary/EditVocabButton'
 import AudioButton from '@/components/common/AudioButton'
@@ -25,29 +25,32 @@ export default async function CollectionDetailPage({ params }: PageProps<'/vocab
   return (
     <div className="space-y-6 fade-in">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <Link href="/vocabulary" className="p-2 rounded-xl hover:bg-[#FFF5F6] transition-colors" style={{ color: '#6B6B7E' }}>
-          <ArrowLeft size={18} />
-        </Link>
-        <div className="flex-1">
-          <h1 className="text-2xl font-bold" style={{ color: '#1A1A2E' }}>{collection.name}</h1>
-          {collection.description && (
-            <p className="text-sm" style={{ color: '#6B6B7E' }}>{collection.description}</p>
-          )}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <Link href="/vocabulary" className="p-2 rounded-xl hover:bg-[#FFF5F6] transition-colors shrink-0" style={{ color: '#6B6B7E' }}>
+            <ArrowLeft size={18} />
+          </Link>
+          <div>
+            <h1 className="text-xl sm:text-2xl font-bold" style={{ color: '#1A1A2E' }}>{collection.name}</h1>
+            {collection.description && (
+              <p className="text-xs sm:text-sm mt-0.5" style={{ color: '#6B6B7E' }}>{collection.description}</p>
+            )}
+          </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2 pl-11 sm:pl-0">
           {vocabulary.length > 0 && (
             <Link
               href={`/study/${id}`}
-              className="px-4 py-2 rounded-xl text-sm font-medium text-white hover:opacity-90 shadow-sm"
+              className="flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs sm:text-sm font-medium text-white hover:opacity-90 shadow-sm flex items-center justify-center gap-1.5"
               style={{ background: '#C8102E' }}
             >
-              Học ngay ▶
+              <span>Học ngay</span>
+              <Play size={12} className="fill-current" />
             </Link>
           )}
           <Link
             href={`/vocabulary/${id}/add`}
-            className="flex items-center gap-1 px-3 py-2 rounded-xl text-sm font-medium border hover:bg-[#FFF5F6]"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1 px-3 py-2 rounded-xl text-xs sm:text-sm font-medium border hover:bg-[#FFF5F6]"
             style={{ borderColor: '#E8D5D8', color: '#C8102E' }}
           >
             <Plus size={15} /> Thêm từ
@@ -72,7 +75,7 @@ export default async function CollectionDetailPage({ params }: PageProps<'/vocab
           className="rounded-2xl p-12 text-center border-2 border-dashed"
           style={{ borderColor: '#E8D5D8' }}
         >
-          <div className="text-4xl mb-3">✨</div>
+          <Sparkles size={40} className="mx-auto mb-3 text-[#C8102E]/60" />
           <p className="font-medium mb-1" style={{ color: '#1A1A2E' }}>Bộ này chưa có từ nào</p>
           <p className="text-sm mb-4" style={{ color: '#6B6B7E' }}>Thêm từ đầu tiên qua tìm kiếm Jisho & AI</p>
           <Link

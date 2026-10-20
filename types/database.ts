@@ -70,6 +70,7 @@ export interface Database {
           user_id: string
           word: string
           reading: string
+          han_viet: string | null
           meaning_vi: string
           meaning_en: string | null
           example_jp: string | null
@@ -83,6 +84,7 @@ export interface Database {
           user_id: string
           word: string
           reading: string
+          han_viet?: string | null
           meaning_vi: string
           meaning_en?: string | null
           example_jp?: string | null
@@ -96,6 +98,7 @@ export interface Database {
           user_id?: string
           word?: string
           reading?: string
+          han_viet?: string | null
           meaning_vi?: string
           meaning_en?: string | null
           example_jp?: string | null

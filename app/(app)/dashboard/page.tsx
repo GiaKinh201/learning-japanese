@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { BookOpen, Flame, GraduationCap, Plus } from 'lucide-react'
+import { BookOpen, Flame, GraduationCap, Plus, Play, PartyPopper } from 'lucide-react'
 import StatCard from '@/components/common/StatCard'
 
 export default async function DashboardPage() {
@@ -29,7 +29,7 @@ export default async function DashboardPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold" style={{ color: '#1A1A2E' }}>
-            こんにちは、{firstName}さん！👋
+            こんにちは、{firstName}さん！
           </h1>
           <p className="text-sm mt-1" style={{ color: '#6B6B7E' }}>
             {todayCount > 0
@@ -93,7 +93,7 @@ export default async function DashboardPage() {
                   style={{ background: '#C8102E' }}
                 >
                   <span>Học ngay ({eligibleCol.name})</span>
-                  <span>▶</span>
+                  <Play size={11} className="fill-current" />
                 </Link>
               ) : null
             })()}
@@ -111,7 +111,9 @@ export default async function DashboardPage() {
       {todayCount > 0 && (
         <div className="rounded-2xl p-4 border flex items-center justify-between gap-3 bg-[#F0FDF4] border-[#A7F3D0]">
           <div className="flex items-center gap-3">
-            <span className="text-2xl">🎉</span>
+            <div className="w-10 h-10 rounded-xl bg-[#D1FAE5] text-[#059669] flex items-center justify-center shrink-0">
+              <PartyPopper size={20} />
+            </div>
             <div>
               <p className="text-sm font-bold text-[#065F46]">
                 Đã hoàn thành mục tiêu ngày hôm nay!
@@ -214,10 +216,11 @@ function CollectionCard({
         {count > 0 && (
           <Link
             href={`/study/${id}`}
-            className="flex-1 text-center py-1.5 rounded-lg text-xs font-medium text-white transition-colors hover:opacity-90"
+            className="flex-1 text-center py-1.5 rounded-lg text-xs font-medium text-white transition-colors hover:opacity-90 flex items-center justify-center gap-1"
             style={{ background: '#C8102E' }}
           >
-            Học ngay ▶
+            <span>Học ngay</span>
+            <Play size={11} className="fill-current" />
           </Link>
         )}
       </div>
@@ -231,7 +234,7 @@ function EmptyCollections() {
       className="rounded-2xl p-10 text-center border-2 border-dashed"
       style={{ borderColor: '#E8D5D8' }}
     >
-      <div className="text-5xl mb-3">📚</div>
+      <BookOpen size={48} className="mx-auto mb-3 text-[#C8102E]/60" />
       <p className="font-medium mb-1" style={{ color: '#1A1A2E' }}>Chưa có bộ từ vựng nào</p>
       <p className="text-sm mb-4" style={{ color: '#6B6B7E' }}>
         Tạo bộ đầu tiên để bắt đầu hành trình học tiếng Nhật!

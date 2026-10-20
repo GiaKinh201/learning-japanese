@@ -4,7 +4,7 @@ import { useState, useCallback, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { getWordDisplay, type JishoWord } from '@/lib/jisho'
-import { ArrowLeft, Search, Loader2, Check, ChevronDown, ChevronUp, Sparkles, RefreshCw } from 'lucide-react'
+import { ArrowLeft, Search, Loader2, Check, ChevronDown, ChevronUp, Sparkles, RefreshCw, AlertCircle } from 'lucide-react'
 import Link from 'next/link'
 import AudioButton from '@/components/common/AudioButton'
 
@@ -194,8 +194,9 @@ export default function AddVocabClient({ collectionId, collectionName }: { colle
         className="rounded-2xl p-5 border"
         style={{ background: '#FFFFFF', borderColor: '#E8D5D8' }}
       >
-        <p className="text-sm font-medium mb-3" style={{ color: '#1A1A2E' }}>
-          🔍 Tìm từ — nhập tiếng Việt, tiếng Anh, hoặc tiếng Nhật
+        <p className="text-sm font-medium mb-3 flex items-center gap-2" style={{ color: '#1A1A2E' }}>
+          <Search size={16} className="text-[#C8102E]" />
+          <span>Tìm từ — nhập tiếng Việt, tiếng Anh, hoặc tiếng Nhật</span>
         </p>
         <div className="flex gap-2">
           <input
@@ -299,7 +300,7 @@ export default function AddVocabClient({ collectionId, collectionName }: { colle
               className="p-4 rounded-xl text-sm text-center"
               style={{ background: '#FFF5F6', color: '#6B6B7E' }}
             >
-              😅 Không tìm thấy kết quả cho <strong>&ldquo;{query}&rdquo;</strong>.<br />
+              Không tìm thấy kết quả cho <strong>&ldquo;{query}&rdquo;</strong>.<br />
               Thử nhập tiếng Nhật (VD: <span style={{ color: '#C8102E' }}>食べる</span>) hoặc tiếng Anh.
             </div>
           )}
@@ -395,7 +396,10 @@ export default function AddVocabClient({ collectionId, collectionName }: { colle
                 className="p-3.5 rounded-xl text-xs flex items-center justify-between gap-3 border"
                 style={{ background: '#FFF5F6', borderColor: '#F5D0D5', color: '#991B1B' }}
               >
-                <span className="leading-relaxed">⚠️ {aiError}</span>
+                <div className="flex items-center gap-2">
+                  <AlertCircle size={15} className="shrink-0" />
+                  <span className="leading-relaxed">{aiError}</span>
+                </div>
                 <button
                   type="button"
                   onClick={() => fetchAiExamples(selected)}
@@ -409,8 +413,9 @@ export default function AddVocabClient({ collectionId, collectionName }: { colle
 
             {!aiLoading && aiExamples.length > 0 && (
               <div className="space-y-2.5">
-                <p className="text-xs font-medium" style={{ color: '#6B6B7E' }}>
-                  ✨ Bấm vào 1 câu bạn thích để tự động điền vào thẻ từ:
+                <p className="text-xs font-medium flex items-center gap-1.5" style={{ color: '#6B6B7E' }}>
+                  <Sparkles size={14} className="text-[#C8102E]" />
+                  <span>Bấm vào 1 câu bạn thích để tự động điền vào thẻ từ:</span>
                 </p>
                 {aiExamples.map((item, idx) => {
                   const isSelected = selectedExampleIndex === idx
@@ -440,8 +445,9 @@ export default function AddVocabClient({ collectionId, collectionName }: { colle
                           </p>
                         </div>
                         {isSelected && (
-                          <span className="text-xs font-bold px-2 py-0.5 rounded-full shrink-0" style={{ background: '#D1FAE5', color: '#065F46' }}>
-                            ✓ Đã chọn
+                          <span className="text-xs font-bold px-2 py-0.5 rounded-full shrink-0 inline-flex items-center gap-1" style={{ background: '#D1FAE5', color: '#065F46' }}>
+                            <Check size={12} />
+                            <span>Đã chọn</span>
                           </span>
                         )}
                       </div>
@@ -529,10 +535,17 @@ export default function AddVocabClient({ collectionId, collectionName }: { colle
               <button
                 type="submit"
                 disabled={isPending || !meaningVi.trim()}
-                className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white disabled:opacity-50 cursor-pointer hover:opacity-90 shadow-sm"
+                className="flex-1 py-2.5 rounded-xl text-sm font-medium text-white disabled:opacity-50 cursor-pointer hover:opacity-90 shadow-sm flex items-center justify-center gap-1.5"
                 style={{ background: '#C8102E' }}
               >
-                {isPending ? 'Đang lưu...' : '✓ Lưu từ này'}
+                {isPending ? (
+                  'Đang lưu...'
+                ) : (
+                  <>
+                    <Check size={16} />
+                    <span>Lưu từ này</span>
+                  </>
+                )}
               </button>
             </div>
           </form>
