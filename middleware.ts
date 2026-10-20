@@ -29,19 +29,39 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { pathname } = request.nextUrl
+  const { pathname, searchParams } = request.nextUrl
+
+  // Tự động bắt mã OAuth code nếu Supabase chuyển hướng về trang chủ /?code=... thay vì /auth/callback
+  const code = searchParams.get('code')
+  if (code && pathname !== '/auth/callback') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/callback'
+    return NextResponse.redirect(url)
+  }
 
   // Protected routes: require login
   const protectedPaths = ['/dashboard', '/vocabulary', '/study', '/profile']
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p))
 
   if (isProtected && !user) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((c) => {
+      redirectResponse.cookies.set(c.name, c.value, c)
+    })
+    return redirectResponse
   }
 
-  // Redirect logged-in users away from login page
-  if (pathname === '/login' && user) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+  // Redirect logged-in users away from landing page ('/') and login page ('/login') to dashboard
+  if ((pathname === '/' || pathname === '/login') && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
+    const redirectResponse = NextResponse.redirect(url)
+    supabaseResponse.cookies.getAll().forEach((c) => {
+      redirectResponse.cookies.set(c.name, c.value, c)
+    })
+    return redirectResponse
   }
 
   return supabaseResponse

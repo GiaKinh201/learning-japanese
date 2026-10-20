@@ -1,6 +1,29 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
 
-export default function LandingPage() {
+interface Props {
+  searchParams: Promise<{ code?: string }>
+}
+
+export default async function LandingPage({ searchParams }: Props) {
+  const { code } = await searchParams
+
+  // Nếu có mã code từ Google/Supabase chuyển về trang chủ, đưa sang /auth/callback để đổi lấy phiên
+  if (code) {
+    redirect(`/auth/callback?code=${code}`)
+  }
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  // Nếu người dùng đã đăng nhập, tự động chuyển thẳng vào Dashboard
+  if (user) {
+    redirect('/dashboard')
+  }
+
   return (
     <main className="min-h-screen flex flex-col">
       {/* Hero */}
@@ -44,13 +67,13 @@ export default function LandingPage() {
       {/* Features */}
       <section className="py-20 px-6" style={{ background: '#FFFFFF' }}>
         <h2 className="text-center text-2xl font-bold mb-12" style={{ color: '#1A1A2E' }}>
-          Tính năng chính
+          Tính năng nổi bật
         </h2>
-        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl p-6 border"
+              className="rounded-2xl p-6 border transition-all hover:shadow-sm"
               style={{ borderColor: '#E8D5D8', background: '#FFFAF9' }}
             >
               <div className="text-3xl mb-3">{f.icon}</div>
@@ -72,17 +95,32 @@ export default function LandingPage() {
 const features = [
   {
     icon: '📚',
-    title: 'Từ điển Jisho',
-    desc: 'Tìm từ bằng tiếng Việt hoặc tiếng Anh, hệ thống tự tìm chữ Nhật và nghĩa cho bạn.',
+    title: 'Từ điển Jisho thông minh',
+    desc: 'Tìm từ vựng linh hoạt bằng tiếng Việt, tiếng Anh hoặc Kanji với gợi ý cấp độ JLPT chuẩn xác.',
+  },
+  {
+    icon: '✨',
+    title: 'Trợ lý Gemini AI',
+    desc: 'Tự động dịch nghĩa tiếng Việt tự nhiên và đặt 2 câu ví dụ thực tế kèm cách đọc Furigana.',
+  },
+  {
+    icon: '🔊',
+    title: 'Phát âm chuẩn bản xứ',
+    desc: 'Nghe phát âm chuẩn giọng Nhật (ja-JP) cho cả từ vựng và toàn bộ câu ví dụ chỉ bằng một chạm.',
   },
   {
     icon: '🃏',
-    title: 'Flashcard thông minh',
-    desc: 'Học theo thẻ lật — xem chữ Nhật, đoán nghĩa, rồi kiểm tra. Có ví dụ câu đi kèm.',
+    title: 'Thẻ học 3D Active Recall',
+    desc: 'Phương pháp lật thẻ thông minh với phím tắt nhanh, tính điểm và vòng ôn tập các từ chưa nhớ.',
+  },
+  {
+    icon: '🔀',
+    title: 'Học gộp nhiều bộ từ',
+    desc: 'Tự do chọn gộp nhiều bộ từ vựng khác nhau với thuật toán xáo trộn ngẫu nhiên toàn diện.',
   },
   {
     icon: '🔥',
-    title: 'Theo dõi streak',
-    desc: 'Học mỗi ngày để duy trì streak. Xem tổng từ đã học và tiến độ hôm nay.',
+    title: 'Theo dõi Streak & Tiến độ',
+    desc: 'Duy trì thói quen học tập hàng ngày với chuỗi ngày liên tiếp và biểu đồ tổng hợp từ vựng.',
   },
 ]

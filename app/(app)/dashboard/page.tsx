@@ -60,6 +60,75 @@ export default async function DashboardPage() {
         />
       </div>
 
+      {/* Daily Study Action Banner */}
+      {todayCount === 0 && totalVocab > 0 && collections.some((c) => ((c.vocabulary as unknown as { count: number }[])?.[0]?.count ?? 0) > 0) && (
+        <div
+          className="rounded-2xl p-5 border flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+          style={{
+            background: 'linear-gradient(135deg, #FFF5F6 0%, #FFFFFF 100%)',
+            borderColor: '#F5D0D5',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#FFE4E8] text-[#C8102E] flex items-center justify-center shrink-0">
+              <Flame size={22} />
+            </div>
+            <div>
+              <h3 className="font-bold text-sm text-[#1A1A2E]">
+                Duy trì ngọn lửa Streak hôm nay!
+              </h3>
+              <p className="text-xs text-[#6B6B7E] mt-0.5">
+                Chỉ cần 5 phút ôn luyện để giữ vững chuỗi học {profile?.streak ?? 0} ngày liên tiếp.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            {(() => {
+              const eligibleCol = collections.find((c) => ((c.vocabulary as unknown as { count: number }[])?.[0]?.count ?? 0) > 0)
+              return eligibleCol ? (
+                <Link
+                  href={`/study/${eligibleCol.id}`}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-white shadow-xs hover:opacity-90 transition-all flex items-center gap-1.5"
+                  style={{ background: '#C8102E' }}
+                >
+                  <span>Học ngay ({eligibleCol.name})</span>
+                  <span>▶</span>
+                </Link>
+              ) : null
+            })()}
+            <Link
+              href="/vocabulary"
+              className="px-3.5 py-2 rounded-xl text-xs font-medium border text-[#6B6B7E] hover:text-[#1A1A2E] hover:bg-white transition-colors"
+              style={{ borderColor: '#E8D5D8' }}
+            >
+              Chọn bộ khác
+            </Link>
+          </div>
+        </div>
+      )}
+
+      {todayCount > 0 && (
+        <div className="rounded-2xl p-4 border flex items-center justify-between gap-3 bg-[#F0FDF4] border-[#A7F3D0]">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">🎉</span>
+            <div>
+              <p className="text-sm font-bold text-[#065F46]">
+                Đã hoàn thành mục tiêu ngày hôm nay!
+              </p>
+              <p className="text-xs text-[#047857]">
+                Bạn đã tích luỹ {todayCount} lượt ôn tập. Càng học đều đặn càng nhớ sâu!
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/vocabulary"
+            className="text-xs font-bold px-3.5 py-1.5 rounded-xl bg-white text-[#059669] border border-[#A7F3D0] hover:bg-[#ECFDF5] transition-colors shrink-0"
+          >
+            Học tiếp →
+          </Link>
+        </div>
+      )}
+
       {/* Collections */}
       <div>
         <div className="flex items-center justify-between mb-3">
