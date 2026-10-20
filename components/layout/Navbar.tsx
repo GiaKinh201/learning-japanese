@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { Profile } from '@/types/database'
-import { BookOpen, LayoutDashboard, LogOut, User, GraduationCap } from 'lucide-react'
+import { BookOpen, LayoutDashboard, LogOut, User, GraduationCap, Languages } from 'lucide-react'
 
 interface NavbarProps {
   profile: Profile | null
@@ -12,6 +12,7 @@ interface NavbarProps {
 
 const navLinks = [
   { href: '/dashboard', label: 'Tổng quan', icon: LayoutDashboard },
+  { href: '/alphabet', label: 'Bảng chữ cái', icon: Languages },
   { href: '/vocabulary', label: 'Từ vựng', icon: BookOpen },
 ]
 
@@ -31,7 +32,7 @@ export default function Navbar({ profile }: NavbarProps) {
       className="sticky top-0 z-50 border-b"
       style={{ background: '#FFFFFF', borderColor: '#E8D5D8' }}
     >
-      <div className="max-w-5xl mx-auto px-3 sm:px-4 h-14 flex items-center justify-between sm:justify-start gap-2 sm:gap-6">
+      <div className="max-w-5xl mx-auto px-2 sm:px-4 h-14 flex items-center justify-between sm:justify-start gap-1 sm:gap-6">
         {/* Logo */}
         <Link
           href="/dashboard"
@@ -43,21 +44,30 @@ export default function Navbar({ profile }: NavbarProps) {
         </Link>
 
         {/* Nav links */}
-        <div className="flex items-center gap-1 sm:gap-1.5 flex-1 min-w-0">
+        <div className="flex items-center gap-0.5 sm:gap-1.5 flex-1 min-w-0 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden py-1">
           {navLinks.map(({ href, label, icon: Icon }) => {
             const active = pathname.startsWith(href)
             return (
               <Link
                 key={href}
                 href={href}
-                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap shrink-0"
+                className="flex items-center gap-1 sm:gap-1.5 px-1.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors whitespace-nowrap shrink-0"
                 style={{
                   background: active ? '#FFE4E8' : 'transparent',
                   color: active ? '#C8102E' : '#6B6B7E',
                 }}
               >
                 <Icon size={15} />
-                {label}
+                <span>
+                  {label === 'Bảng chữ cái' ? (
+                    <>
+                      <span className="sm:hidden">Chữ cái</span>
+                      <span className="hidden sm:inline">Bảng chữ cái</span>
+                    </>
+                  ) : (
+                    label
+                  )}
+                </span>
               </Link>
             )
           })}

@@ -40,7 +40,7 @@ Hãy xử lý từ vựng tiếng Nhật sau:
 ${targetLevel ? `- Cấp độ JLPT: "${targetLevel}"` : ''}
 
 YÊU CẦU:
-1. "word_meaning_vi": Dịch nghĩa từ vựng sang tiếng Việt chuẩn xác, súc tích, tự nhiên (1-3 từ, ví dụ "đặc sản", "chỗ ở", "ăn", "lời hứa"). Tuyệt đối KHÔNG chứa tiếng Anh.
+1. "word_meaning_vi": Dịch nghĩa từ vựng sang tiếng Việt chuẩn xác, súc tích, tự nhiên và sát với ngữ cảnh thực tế của người Việt (1-3 từ, ví dụ "ngôi nhà", "ăn uống", "bạn bè"). Ưu tiên nghĩa thông dụng nhất trong đời sống hằng ngày. Tuyệt đối KHÔNG chứa tiếng Anh.
 2. "examples": Tạo đúng 2 câu ví dụ ngắn gọn (khoảng 10-18 chữ), tự nhiên, chuẩn ngữ pháp tiếng Nhật ${targetLevel ? `cấp độ ${targetLevel}` : ''}:
    - sentence_jp: câu ngắn gọn tiếng Nhật chuẩn Kanji
    - reading: cách đọc toàn bộ câu bằng Hiragana có khoảng trắng phân tách từ/trợ từ

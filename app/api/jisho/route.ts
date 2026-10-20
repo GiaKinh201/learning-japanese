@@ -10,37 +10,77 @@ function isJapanese(text: string): boolean {
   return /[\u3040-\u30FF\u4E00-\u9FFF]/.test(text)
 }
 
-// Translate Vietnamese → Japanese using MyMemory, then extract best Japanese word
+// Translate Vietnamese → Japanese using Google Translate (primary) and MyMemory (fallback)
 async function translateViToJa(text: string): Promise<string> {
   try {
+    // Ưu tiên 1: Google Translate (luôn dịch ra từ cơ bản N5 chuẩn: "nhà" -> "家", "ăn" -> "食べる")
+    const gUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=vi&tl=ja&dt=t&q=${encodeURIComponent(text)}`
+    const gRes = await fetch(gUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      },
+      signal: AbortSignal.timeout(4000),
+    })
+    if (gRes.ok) {
+      const gData = await gRes.json()
+      const translated = gData?.[0]?.[0]?.[0]
+      if (translated && isJapanese(translated)) {
+        return translated.trim()
+      }
+    }
+  } catch {
+    // Tiếp tục thử fallback MyMemory bên dưới
+  }
+
+  try {
+    // Dự phòng 2: MyMemory
     const res = await fetch(
       `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=vi|ja`,
-      { signal: AbortSignal.timeout(5000) }
+      { signal: AbortSignal.timeout(4000) }
     )
-    if (!res.ok) return text
-    const json = await res.json()
-    const translated: string = json?.responseData?.translatedText ?? ''
-    // MyMemory sometimes returns romaji or garbage; only use if it has Japanese chars
-    if (translated && isJapanese(translated)) {
-      return translated.trim()
+    if (res.ok) {
+      const json = await res.json()
+      const translated: string = json?.responseData?.translatedText ?? ''
+      if (translated && isJapanese(translated)) {
+        return translated.trim()
+      }
+      const matches: Array<{ translation: string; match: number }> = json?.matches ?? []
+      for (const m of matches) {
+        if (isJapanese(m.translation)) return m.translation.trim()
+      }
     }
-    // Try matches array for better result
-    const matches: Array<{ translation: string; match: number }> = json?.matches ?? []
-    for (const m of matches) {
-      if (isJapanese(m.translation)) return m.translation.trim()
-    }
-    return text // fallback: search as-is
   } catch {
-    return text
+    // Fallback
   }
+
+  return text
 }
 
-// Translate Vietnamese → English using MyMemory (fallback)
+// Translate Vietnamese → English using Google Translate (primary) and MyMemory (fallback)
 async function translateViToEn(text: string): Promise<string> {
+  try {
+    const gUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=vi&tl=en&dt=t&q=${encodeURIComponent(text)}`
+    const gRes = await fetch(gUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+      },
+      signal: AbortSignal.timeout(4000),
+    })
+    if (gRes.ok) {
+      const gData = await gRes.json()
+      const translated = gData?.[0]?.[0]?.[0]
+      if (translated && translated.toLowerCase() !== text.toLowerCase()) {
+        return translated.trim()
+      }
+    }
+  } catch {
+    // Fallback
+  }
+
   try {
     const res = await fetch(
       `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=vi|en`,
-      { signal: AbortSignal.timeout(5000) }
+      { signal: AbortSignal.timeout(4000) }
     )
     if (!res.ok) return text
     const json = await res.json()

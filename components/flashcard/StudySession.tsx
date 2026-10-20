@@ -47,55 +47,62 @@ export default function StudySession({ initialCards, collectionId, collectionNam
   }, [])
 
   const handleResult = useCallback(
-    async (correct: boolean) => {
-      const newResults = [...results, { id: current.id, correct }]
-      setResults(newResults)
+    (correct: boolean) => {
+      const currentVocabId = current.id
+      setResults((prev) => [...prev, { id: currentVocabId, correct }])
 
-      // Log kết quả vào DB
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-      if (user) {
-        await supabase.from('study_logs').insert({
-          user_id: user.id,
-          vocabulary_id: current.id,
-          result: correct,
-        })
-
-        // Cập nhật streak học tập
-        const today = new Date().toISOString().split('T')[0]
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('streak, last_study_date')
-          .eq('id', user.id)
-          .single()
-
-        if (profile) {
-          const isNewDay = profile.last_study_date !== today
-          if (isNewDay) {
-            const yesterday = new Date()
-            yesterday.setDate(yesterday.getDate() - 1)
-            const yStr = yesterday.toISOString().split('T')[0]
-            const newStreak = profile.last_study_date === yStr ? (profile.streak ?? 0) + 1 : 1
-            await supabase
-              .from('profiles')
-              .update({
-                streak: newStreak,
-                last_study_date: today,
-              })
-              .eq('id', user.id)
-          }
-        }
-      }
-
+      // 1. Phản hồi tức thì 0ms (Optimistic UI): Chuyển thẻ tiếp theo ngay lập tức không chờ mạng
       if (currentIndex + 1 >= cards.length) {
         setDone(true)
       } else {
-        setCurrentIndex(currentIndex + 1)
+        setCurrentIndex((prev) => prev + 1)
         setCardState('question')
       }
+
+      // 2. Ghi nhận log và cập nhật Streak ngầm trong background (fire-and-forget, không block UI)
+      void (async () => {
+        try {
+          const {
+            data: { user },
+          } = await supabase.auth.getUser()
+          if (!user) return
+
+          await supabase.from('study_logs').insert({
+            user_id: user.id,
+            vocabulary_id: currentVocabId,
+            result: correct,
+          })
+
+          // Cập nhật streak học tập
+          const today = new Date().toISOString().split('T')[0]
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('streak, last_study_date')
+            .eq('id', user.id)
+            .single()
+
+          if (profile) {
+            const isNewDay = profile.last_study_date !== today
+            if (isNewDay) {
+              const yesterday = new Date()
+              yesterday.setDate(yesterday.getDate() - 1)
+              const yStr = yesterday.toISOString().split('T')[0]
+              const newStreak = profile.last_study_date === yStr ? (profile.streak ?? 0) + 1 : 1
+              await supabase
+                .from('profiles')
+                .update({
+                  streak: newStreak,
+                  last_study_date: today,
+                })
+                .eq('id', user.id)
+            }
+          }
+        } catch (err) {
+          console.error('Lỗi khi ghi study log ngầm:', err)
+        }
+      })()
     },
-    [current, currentIndex, cards.length, results, supabase]
+    [current.id, currentIndex, cards.length, supabase]
   )
 
   // Phím tắt bàn phím (Active Recall Keyboard Shortcuts)
@@ -278,7 +285,10 @@ export default function StudySession({ initialCards, collectionId, collectionNam
 
       {/* Flashcard */}
       <div className="card-scene" style={{ height: '370px' }}>
-        <div className={`card-inner ${cardState === 'answer' ? 'flipped' : ''}`}>
+        <div
+          key={current.id}
+          className={`card-inner ${cardState === 'answer' ? 'flipped' : ''}`}
+        >
           {/* Front — Japanese word */}
           <div
             className="card-front rounded-3xl border border-[#E8D5D8] bg-white flex flex-col items-center justify-center p-8 cursor-pointer select-none relative"
